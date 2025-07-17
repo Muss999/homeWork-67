@@ -5,8 +5,12 @@ import type { RootState } from "../../app/store";
 
 const PasswordForm = () => {
     const passwordFormValue = useSelector(
-        (state: RootState) => state.passwordForm.value
+        (state: RootState) => state.passwordForm.hiddenValue
     );
+    const passwordFormCheck = useSelector(
+        (state: RootState) => state.passwordForm.isRight
+    );
+
     const buttonsArr = [
         ["7", "8", "9"],
         ["4", "5", "6"],
@@ -14,13 +18,28 @@ const PasswordForm = () => {
         ["<", "0", "E"],
         ["R"],
     ];
+
+    let passwordFormDisplay = (
+        <div className="passwordForm-display">{passwordFormValue}</div>
+    );
+
+    if (passwordFormCheck === false) {
+        passwordFormDisplay = (
+            <div className="passwordForm-display passwordForm-display__wrong">
+                {passwordFormValue}
+            </div>
+        );
+    }
+    if (passwordFormCheck) {
+        passwordFormDisplay = (
+            <div className="passwordForm-display passwordForm-display__right">
+                {passwordFormValue}
+            </div>
+        );
+    }
     return (
         <div className="passwordForm">
-            <input
-                className="passwordForm-display"
-                type="text"
-                value={passwordFormValue}
-            />
+            {passwordFormDisplay}
             <div className="passwordForm-btns">
                 {buttonsArr.map((row) => {
                     return row.map((btnLabel, index) => {

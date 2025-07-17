@@ -3,10 +3,14 @@ import { PASSWORD } from "../../helpers/consts";
 
 interface PasswordState {
     value: string;
+    hiddenValue: string;
+    isRight: boolean | null;
 }
 
 const initialState: PasswordState = {
     value: "",
+    hiddenValue: "",
+    isRight: null,
 };
 
 const passwordFormSlice = createSlice({
@@ -14,22 +18,37 @@ const passwordFormSlice = createSlice({
     initialState,
     reducers: {
         addNumber: (state, action: PayloadAction<string>) => {
-            state.value += action.payload;
+            if (state.value.length < 4 && state.isRight !== false) {
+                state.value += action.payload;
+                state.hiddenValue += "*";
+            }
         },
         deleteNumber: (state) => {
-            const numbersArr = state.value.split("");
-            numbersArr.pop();
-            const newNumbers = numbersArr.join("");
-            state.value = newNumbers;
+            if (state.isRight === null) {
+                const valueArr = state.value.split("");
+                valueArr.pop();
+                const newValue = valueArr.join("");
+
+                const hiddenValueArr = state.hiddenValue.split("");
+                hiddenValueArr.pop();
+                const newHiddenValue = hiddenValueArr.join("");
+
+                state.value = newValue;
+                state.hiddenValue = newHiddenValue;
+            }
         },
         resetPasswordForm: (state) => {
             state.value = "";
+            state.hiddenValue = "";
+            state.isRight = null;
         },
         passwordCheck: (state) => {
             if (state.value === PASSWORD) {
-                console.log("RIIGHT");
+                state.hiddenValue = "Access granted";
+                state.isRight = true;
             } else {
-                console.log("WRONG");
+                state.hiddenValue = "Access denied";
+                state.isRight = false;
             }
         },
     },
