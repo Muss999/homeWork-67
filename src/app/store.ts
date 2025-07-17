@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { passwordFormReducer } from "../components/PasswordForm/passwordFormSlice";
 
 export const store = configureStore({
-    reducer: {},
+    reducer: {
+        passwordForm: passwordFormReducer,
+    },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -1,5 +1,12 @@
+import PasswordForm from "./components/PasswordForm/PasswordForm";
+import "./App.css";
+
 const App = () => {
-    return <div>App</div>;
+    return (
+        <div className="container">
+            <PasswordForm />
+        </div>
+    );
 };
 
 export default App;
